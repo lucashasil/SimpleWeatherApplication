@@ -10,7 +10,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setFixedSize(QSize(1000, 600))
+        self.setFixedSize(QSize(1000, 800))
         self.setWindowTitle("My Weather Application")
         
         baseLayout = QGridLayout() # base grid of all locations
@@ -105,6 +105,24 @@ class MainWindow(QMainWindow):
         melLabelWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
         perLabelWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+        canLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
+        sydLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
+        darLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
+        briLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
+        adeLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
+        hobLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
+        melLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
+        perLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
+
+        canLabelWeather.setStyleSheet("border: 1.3px solid black;")
+        sydLabelWeather.setStyleSheet("border: 1.3px solid black;")
+        darLabelWeather.setStyleSheet("border: 1.3px solid black;")
+        briLabelWeather.setStyleSheet("border: 1.3px solid black;")
+        adeLabelWeather.setStyleSheet("border: 1.3px solid black;")
+        hobLabelWeather.setStyleSheet("border: 1.3px solid black;")
+        melLabelWeather.setStyleSheet("border: 1.3px solid black;")
+        perLabelWeather.setStyleSheet("border: 1.3px solid black;")
+
         canLayout.addWidget(canLabel)
         sydLayout.addWidget(sydLabel)
         darLayout.addWidget(darLabel)
@@ -172,15 +190,20 @@ class MainWindow(QMainWindow):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0'} # needed to authenticate, need user-agnt
         request = requests.get(url, headers=headers)
         jsonContent = json.loads(request.content)
-        # print(jsonContent['observations']['data'][0]['name']) # this is index for station location
-        # print(jsonContent['observations']['data'][0]["local_date_time"])
-        # print(jsonContent['observations']['data'][0]["air_temp"]) # 0 is the most recent weather report
-        # if (jsonContent['observations']['data'][0]["cloud"] == "-"):
-        #     print("Clear")
-        # else:
-        #     print(jsonContent['observations']['data'][0]["cloud"])
-        # print(str(jsonContent['observations']['data'][0]["rel_hum"]) + '%')
-        return (jsonContent['observations']['data'][0]['name'] + " " + jsonContent['observations']['data'][0]["local_date_time"] + " " + str(jsonContent['observations']['data'][0]["air_temp"]) + " " + str(jsonContent['observations']['data'][0]["rel_hum"]) + "%")
+        statLoc = jsonContent['observations']['data'][0]['name']
+        locTime = jsonContent['observations']['data'][0]["local_date_time"]
+        temp = str(jsonContent['observations']['data'][0]["air_temp"])
+        humPer = str(jsonContent['observations']['data'][0]["rel_hum"])
+
+        if (humPer == "None"):
+            hum = "0%"
+        else:
+            hum = humPer + "%"
+
+        return ("Station location: " + statLoc + "\n"
+        + "Local Time: " + locTime[3:len(locTime)] + "\n"
+        + "Temperature: " + temp + u"\N{DEGREE SIGN}" + "C" + "\n"
+        + "Humidity: " + hum)
 
 
 app = QApplication([])
