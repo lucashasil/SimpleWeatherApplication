@@ -105,14 +105,8 @@ class MainWindow(QMainWindow):
         + "Humidity: " + hum)
 
     def updateWeather(self):
-        self.canLabelWeather.setText(self.fetchWeather("Canberra"))
-        self.sydLabelWeather.setText(self.fetchWeather("Sydney"))
-        self.darLabelWeather.setText(self.fetchWeather("Darwin"))
-        self.briLabelWeather.setText(self.fetchWeather("Brisbane"))
-        self.adeLabelWeather.setText(self.fetchWeather("Adelaide"))
-        self.hobLabelWeather.setText(self.fetchWeather("Hobart"))
-        self.melLabelWeather.setText(self.fetchWeather("Melbourne"))
-        self.perLabelWeather.setText(self.fetchWeather("Perth"))
+        for i in range(len(self.citiesList)):
+            self.citiesList[i][3].setText(self.fetchWeather(self.cities[i]))
         print("updated")
 
 
