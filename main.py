@@ -32,7 +32,8 @@ class MainWindow(QMainWindow):
             self.citiesList[i].append(QVBoxLayout())
             self.citiesList[i].append(QLabel(self.cities[i]))
             self.citiesList[i].append(QLabel())
-            self.citiesList[i][2].setPixmap(QPixmap('test.jpg'))
+            # self.citiesList[i][2].setPixmap(QPixmap('perth.jpg'))
+            self.citiesList[i][2].setPixmap(QPixmap("images/" + self.cities[i] + ".jpg"))
             self.citiesList[i].append(QLabel(self.fetchWeather(self.cities[i])))
 
         # add the widgets to their layouts
