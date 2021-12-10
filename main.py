@@ -7,6 +7,10 @@ import json
 import requests
 
 class MainWindow(QMainWindow):
+
+    cities = ["Canberra", "Sydney", "Darwin", "Brisbane", "Adelaide"
+             , "Hobart", "Melbourne", "Perth"]
+
     def __init__(self):
         super().__init__()
 
@@ -16,152 +20,40 @@ class MainWindow(QMainWindow):
 
         self.baseLayout = QGridLayout() # base grid of all locations
 
-        # create separate vertical box layout for each location which will be 
-        # put in the grid individually
-        self.canLayout = QVBoxLayout()
-        self.sydLayout = QVBoxLayout()
-        self.darLayout = QVBoxLayout()
-        self.briLayout = QVBoxLayout()
-        self.adeLayout = QVBoxLayout()
-        self.hobLayout = QVBoxLayout()
-        self.melLayout = QVBoxLayout()
-        self.perLayout = QVBoxLayout()
+
+        self.citiesList = []
+
+        for i in range(len(self.cities)):
+            self.citiesList.append([])
+
+        # add the layouts and their respective widgets to their own lists
+        for i in range(len(self.cities)):
+            self.citiesList[i].append(QVBoxLayout())
+            self.citiesList[i].append(QLabel(self.cities[i]))
+            self.citiesList[i].append(QLabel())
+            self.citiesList[i][2].setPixmap(QPixmap('test.jpg'))
+            self.citiesList[i].append(QLabel(self.fetchWeather(self.cities[i])))
+
+        # add the widgets to their layouts
+        for i in range(len(self.citiesList)):
+            for j in range(1, len(self.citiesList[i])):
+                self.citiesList[i][2].setScaledContents(True)
+                self.citiesList[i][1].setAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.citiesList[i][1].setStyleSheet("font-weight: bold; text-decoration: underline;")
+                self.citiesList[i][3].setAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.citiesList[i][3].setStyleSheet("border: 1.3px solid black;")
+                self.citiesList[i][0].addWidget(self.citiesList[i][j])
 
 
-        self.canLabel = QLabel("Canberra")
-        self.sydLabel = QLabel("Sydney")
-        self.darLabel = QLabel("Darwin")
-        self.briLabel = QLabel("Brisbane")
-        self.adeLabel = QLabel("Adelaide")
-        self.hobLabel = QLabel("Hobart")
-        self.melLabel = QLabel("Melbourne")
-        self.perLabel = QLabel("Perth")
 
-
-        self.canLabelImg = QLabel()
-        self.sydLabelImg = QLabel()
-        self.darLabelImg = QLabel()
-        self.briLabelImg = QLabel()
-        self.adeLabelImg = QLabel()
-        self.hobLabelImg = QLabel()
-        self.melLabelImg = QLabel()
-        self.perLabelImg = QLabel()
-
-
-        self.canLabelWeather = QLabel()
-        self.sydLabelWeather = QLabel()
-        self.darLabelWeather = QLabel()
-        self.briLabelWeather = QLabel()
-        self.adeLabelWeather = QLabel()
-        self.hobLabelWeather = QLabel()
-        self.melLabelWeather = QLabel()
-        self.perLabelWeather = QLabel()
-
-
-        self.canLabelWeather.setText(self.fetchWeather("can"))
-        self.sydLabelWeather.setText(self.fetchWeather("syd"))
-        self.darLabelWeather.setText(self.fetchWeather("dar"))
-        self.briLabelWeather.setText(self.fetchWeather("bri"))
-        self.adeLabelWeather.setText(self.fetchWeather("ade"))
-        self.hobLabelWeather.setText(self.fetchWeather("hob"))
-        self.melLabelWeather.setText(self.fetchWeather("mel"))
-        self.perLabelWeather.setText(self.fetchWeather("per"))
-
-
-        self.canLabelImg.setScaledContents(True)
-        self.sydLabelImg.setScaledContents(True)
-        self.darLabelImg.setScaledContents(True)
-        self.briLabelImg.setScaledContents(True)
-        self.adeLabelImg.setScaledContents(True)
-        self.hobLabelImg.setScaledContents(True)
-        self.melLabelImg.setScaledContents(True)
-        self.perLabelImg.setScaledContents(True)
-
-    
-        self.canLabelImg.setPixmap(QPixmap('test.jpg'))
-        self.sydLabelImg.setPixmap(QPixmap('test.jpg'))
-        self.darLabelImg.setPixmap(QPixmap('test.jpg'))
-        self.briLabelImg.setPixmap(QPixmap('test.jpg'))
-        self.adeLabelImg.setPixmap(QPixmap('test.jpg'))
-        self.hobLabelImg.setPixmap(QPixmap('test.jpg'))
-        self.melLabelImg.setPixmap(QPixmap('test.jpg'))
-        self.perLabelImg.setPixmap(QPixmap('test.jpg'))
-
-
-        self.canLabel.setAlignment(Qt.AlignmentFlag.AlignCenter) 
-        self.sydLabel.setAlignment(Qt.AlignmentFlag.AlignCenter) 
-        self.darLabel.setAlignment(Qt.AlignmentFlag.AlignCenter) 
-        self.briLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.adeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter) 
-        self.hobLabel.setAlignment(Qt.AlignmentFlag.AlignCenter) 
-        self.melLabel.setAlignment(Qt.AlignmentFlag.AlignCenter) 
-        self.perLabel.setAlignment(Qt.AlignmentFlag.AlignCenter) 
-
-        self.canLabelWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.sydLabelWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.darLabelWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.briLabelWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.adeLabelWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.hobLabelWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.melLabelWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.perLabelWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.canLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
-        self.sydLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
-        self.darLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
-        self.briLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
-        self.adeLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
-        self.hobLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
-        self.melLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
-        self.perLabel.setStyleSheet("font-weight: bold; text-decoration: underline;")
-
-        self.canLabelWeather.setStyleSheet("border: 1.3px solid black;")
-        self.sydLabelWeather.setStyleSheet("border: 1.3px solid black;")
-        self.darLabelWeather.setStyleSheet("border: 1.3px solid black;")
-        self.briLabelWeather.setStyleSheet("border: 1.3px solid black;")
-        self.adeLabelWeather.setStyleSheet("border: 1.3px solid black;")
-        self.hobLabelWeather.setStyleSheet("border: 1.3px solid black;")
-        self.melLabelWeather.setStyleSheet("border: 1.3px solid black;")
-        self.perLabelWeather.setStyleSheet("border: 1.3px solid black;")
-
-        self.canLayout.addWidget(self.canLabel)
-        self.sydLayout.addWidget(self.sydLabel)
-        self.darLayout.addWidget(self.darLabel)
-        self.briLayout.addWidget(self.briLabel)
-        self.adeLayout.addWidget(self.adeLabel)
-        self.hobLayout.addWidget(self.hobLabel)
-        self.melLayout.addWidget(self.melLabel)
-        self.perLayout.addWidget(self.perLabel)
-
-
-        self.canLayout.addWidget(self.canLabelImg)
-        self.sydLayout.addWidget(self.sydLabelImg)
-        self.darLayout.addWidget(self.darLabelImg)
-        self.briLayout.addWidget(self.briLabelImg)
-        self.adeLayout.addWidget(self.adeLabelImg)
-        self.hobLayout.addWidget(self.hobLabelImg)
-        self.melLayout.addWidget(self.melLabelImg)
-        self.perLayout.addWidget(self.perLabelImg)
-
-
-        self.canLayout.addWidget(self.canLabelWeather)
-        self.sydLayout.addWidget(self.sydLabelWeather)
-        self.darLayout.addWidget(self.darLabelWeather)
-        self.briLayout.addWidget(self.briLabelWeather)
-        self.adeLayout.addWidget(self.adeLabelWeather)
-        self.hobLayout.addWidget(self.hobLabelWeather)
-        self.melLayout.addWidget(self.melLabelWeather)
-        self.perLayout.addWidget(self.perLabelWeather)
-
-
-        self.baseLayout.addLayout(self.canLayout, 0, 0)
-        self.baseLayout.addLayout(self.sydLayout, 0, 1)
-        self.baseLayout.addLayout(self.darLayout, 0, 2)
-        self.baseLayout.addLayout(self.briLayout, 1, 0)
-        self.baseLayout.addLayout(self.adeLayout, 1, 1)
-        self.baseLayout.addLayout(self.hobLayout, 1, 2)
-        self.baseLayout.addLayout(self.melLayout, 2, 0)
-        self.baseLayout.addLayout(self.perLayout, 2, 2)
+        self.baseLayout.addLayout(self.citiesList[0][0], 0, 0)
+        self.baseLayout.addLayout(self.citiesList[1][0], 0, 1)
+        self.baseLayout.addLayout(self.citiesList[2][0], 0, 2)
+        self.baseLayout.addLayout(self.citiesList[3][0], 1, 0)
+        self.baseLayout.addLayout(self.citiesList[4][0], 1, 1)
+        self.baseLayout.addLayout(self.citiesList[5][0], 1, 2)
+        self.baseLayout.addLayout(self.citiesList[6][0], 2, 0)
+        self.baseLayout.addLayout(self.citiesList[7][0], 2, 2)
 
 
         self.widget = QWidget() # base widget
@@ -177,21 +69,21 @@ class MainWindow(QMainWindow):
 
     def fetchWeather(self, location):
         match location:
-            case "can":
+            case "Canberra":
                 url = "http://www.bom.gov.au/fwo/IDN60903/IDN60903.94926.json"
-            case "syd":
+            case "Sydney":
                 url = "http://www.bom.gov.au/fwo/IDN60901/IDN60901.95766.json"
-            case "dar":
+            case "Darwin":
                 url = "http://www.bom.gov.au/fwo/IDD60901/IDD60901.95122.json"
-            case "bri":
+            case "Brisbane":
                 url = "http://www.bom.gov.au/fwo/IDQ60901/IDQ60901.94576.json"
-            case "ade":
+            case "Adelaide":
                 url = "http://www.bom.gov.au/fwo/IDS60901/IDS60901.94672.json"
-            case "hob":
+            case "Hobart":
                 url = "http://www.bom.gov.au/fwo/IDT60901/IDT60901.94970.json"
-            case "mel":
+            case "Melbourne":
                 url = "http://www.bom.gov.au/fwo/IDV60901/IDV60901.95936.json"
-            case "per":
+            case "Perth":
                 url = "http://www.bom.gov.au/fwo/IDW60901/IDW60901.94608.json"
 
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0'} # needed to authenticate, need user-agnt
@@ -207,20 +99,20 @@ class MainWindow(QMainWindow):
         else:
             hum = humPer + "%"
 
-        return ("Station location: " + statLoc + "\n"
-        + "Local Time: " + locTime[3:len(locTime)] + "\n"
+        return ("Station Location: " + statLoc + "\n"
+        + "Last Update (Local Time): " + locTime[3:len(locTime)] + "\n"
         + "Temperature: " + temp + u"\N{DEGREE SIGN}" + "C" + "\n"
         + "Humidity: " + hum)
 
     def updateWeather(self):
-        self.canLabelWeather.setText(self.fetchWeather("can"))
-        self.sydLabelWeather.setText(self.fetchWeather("syd"))
-        self.darLabelWeather.setText(self.fetchWeather("dar"))
-        self.briLabelWeather.setText(self.fetchWeather("bri"))
-        self.adeLabelWeather.setText(self.fetchWeather("ade"))
-        self.hobLabelWeather.setText(self.fetchWeather("hob"))
-        self.melLabelWeather.setText(self.fetchWeather("mel"))
-        self.perLabelWeather.setText(self.fetchWeather("per"))
+        self.canLabelWeather.setText(self.fetchWeather("Canberra"))
+        self.sydLabelWeather.setText(self.fetchWeather("Sydney"))
+        self.darLabelWeather.setText(self.fetchWeather("Darwin"))
+        self.briLabelWeather.setText(self.fetchWeather("Brisbane"))
+        self.adeLabelWeather.setText(self.fetchWeather("Adelaide"))
+        self.hobLabelWeather.setText(self.fetchWeather("Hobart"))
+        self.melLabelWeather.setText(self.fetchWeather("Melbourne"))
+        self.perLabelWeather.setText(self.fetchWeather("Perth"))
         print("updated")
 
 
