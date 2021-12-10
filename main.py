@@ -5,6 +5,7 @@ from PyQt6.QtGui import *
 import sys
 import json
 import requests
+import time
 
 class MainWindow(QMainWindow):
 
@@ -14,7 +15,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setFixedSize(QSize(1000, 800))
+        self.setFixedSize(QSize(1000, 700))
         self.setWindowTitle("My Weather Application")
 
 
@@ -44,6 +45,11 @@ class MainWindow(QMainWindow):
                 self.citiesList[i][3].setStyleSheet("border: 1.3px solid black;")
                 self.citiesList[i][0].addWidget(self.citiesList[i][j])
 
+        # fill final grid slot with basic information
+        self.infoLayout = QVBoxLayout()
+        self.lastUpdate = QLabel(self.updateTime())
+        self.lastUpdate.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.infoLayout.addWidget(self.lastUpdate)
 
 
         self.baseLayout.addLayout(self.citiesList[0][0], 0, 0)
@@ -53,6 +59,7 @@ class MainWindow(QMainWindow):
         self.baseLayout.addLayout(self.citiesList[4][0], 1, 1)
         self.baseLayout.addLayout(self.citiesList[5][0], 1, 2)
         self.baseLayout.addLayout(self.citiesList[6][0], 2, 0)
+        self.baseLayout.addLayout(self.infoLayout, 2, 1)
         self.baseLayout.addLayout(self.citiesList[7][0], 2, 2)
 
 
@@ -72,7 +79,7 @@ class MainWindow(QMainWindow):
             case "Canberra":
                 url = "http://www.bom.gov.au/fwo/IDN60903/IDN60903.94926.json"
             case "Sydney":
-                url = "http://www.bom.gov.au/fwo/IDN60901/IDN60901.95766.json"
+                url = "http://www.bom.gov.au/fwo/IDN60901/IDN60901.95765.json"
             case "Darwin":
                 url = "http://www.bom.gov.au/fwo/IDD60901/IDD60901.95122.json"
             case "Brisbane":
@@ -107,7 +114,12 @@ class MainWindow(QMainWindow):
     def updateWeather(self):
         for i in range(len(self.citiesList)):
             self.citiesList[i][3].setText(self.fetchWeather(self.cities[i]))
-        print("updated")
+        self.lastUpdate.setText(self.updateTime())
+
+    def updateTime(self):
+        t = time.localtime()
+        curTime = time.strftime("%I:%M%p", t).lower()
+        return ("Last Update: " + curTime)
 
 
 app = QApplication([])
