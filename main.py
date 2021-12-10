@@ -18,9 +18,7 @@ class MainWindow(QMainWindow):
         self.setFixedSize(QSize(1000, 700))
         self.setWindowTitle("My Weather Application")
 
-
         self.baseLayout = QGridLayout() # base grid of all locations
-
 
         self.citiesList = []
 
@@ -32,7 +30,6 @@ class MainWindow(QMainWindow):
             self.citiesList[i].append(QVBoxLayout())
             self.citiesList[i].append(QLabel(self.cities[i]))
             self.citiesList[i].append(QLabel())
-            # self.citiesList[i][2].setPixmap(QPixmap('perth.jpg'))
             self.citiesList[i][2].setPixmap(QPixmap("images/" + self.cities[i] + ".jpg"))
             self.citiesList[i].append(QLabel(self.fetchWeather(self.cities[i])))
 
