@@ -9,14 +9,14 @@ import time
 
 class MainWindow(QMainWindow):
 
-    cities = ["Canberra", "Sydney", "Darwin", "Brisbane", "Adelaide"
-             , "Hobart", "Melbourne", "Perth"]
+    cities = ["Adelaide", "Brisbane", "Canberra", "Darwin", "Hobart"
+             , "Melbourne", "Perth", "Sydney"]
 
     def __init__(self):
         super().__init__()
 
         self.setFixedSize(QSize(1000, 700))
-        self.setWindowTitle("My Weather Application")
+        self.setWindowTitle("SimpleWeatherApplication")
 
         self.baseLayout = QGridLayout() # base grid of all locations
 
