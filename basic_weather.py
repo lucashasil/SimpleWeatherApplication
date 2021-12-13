@@ -2,7 +2,6 @@ from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 
-import sys
 import json
 import requests
 import time
@@ -98,7 +97,6 @@ class MainWindow(QMainWindow):
         locTime = jsonContent['observations']['data'][0]["local_date_time"]
         temp = str(jsonContent['observations']['data'][0]["air_temp"])
         humPer = str(jsonContent['observations']['data'][0]["rel_hum"])
-
         if (humPer == "None"):
             hum = "0%"
         else:
