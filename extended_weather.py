@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
     def fetchWeather(self, location):
         api = "http://api.openweathermap.org/data/2.5/weather?q="
         loc = location
-        apiKey = "6e22f5d788993623bc42245d9efbb85d" #todo change this to not be uploaded to github
+        apiKey = "insert api key here" #todo change this to not be uploaded to github
         units = "&units=metric"
         url = api + loc + "&appid=" + apiKey + units
 
