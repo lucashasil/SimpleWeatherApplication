@@ -28,8 +28,6 @@ class MainWindow(QMainWindow):
         self.cityBox.returnPressed.connect(self.cityEntered)
 
         # update GUI once city entered
-        self.updateVLayout = QVBoxLayout()
-
 
 
 
@@ -38,9 +36,18 @@ class MainWindow(QMainWindow):
         cityName = self.cityBox.text()
         self.cityBox.clear() # don't really need to clear the box if we are transitioning to a new GUI anyway
         print(cityName)
-
         self.delWidget(self.testLabel, self.layout)
         self.delWidget(self.cityBox, self.layout)
+        self.cityLabel = QLabel("City label")
+        self.cityLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.currentWeather = QLabel("City weather")
+        self.currentWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.nextWeather = QLabel("Upcoming weather")
+        self.nextWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.layout.addWidget(self.cityLabel)
+        self.layout.addWidget(self.currentWeather)
+        self.layout.addWidget(self.nextWeather)
+
 
     def delWidget(self, widget, layout): # technically QLineEdit inherits QFrame NOT QWidget
         try:
@@ -49,7 +56,6 @@ class MainWindow(QMainWindow):
             widget = None
         except:
             traceback.print_exc()
-
 
 
     def fetchWeather(self, location):
