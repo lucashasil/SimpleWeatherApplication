@@ -4,6 +4,7 @@ from PyQt6.QtGui import *
 
 import json
 import requests
+import traceback
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -26,11 +27,29 @@ class MainWindow(QMainWindow):
 
         self.cityBox.returnPressed.connect(self.cityEntered)
 
+        # update GUI once city entered
+        self.updateVLayout = QVBoxLayout()
+
+
+
+
 
     def cityEntered(self):
         cityName = self.cityBox.text()
         self.cityBox.clear() # don't really need to clear the box if we are transitioning to a new GUI anyway
         print(cityName)
+
+        self.delWidget(self.testLabel, self.layout)
+        self.delWidget(self.cityBox, self.layout)
+
+    def delWidget(self, widget, layout): # technically QLineEdit inherits QFrame NOT QWidget
+        try:
+            layout.removeWidget(widget)
+            widget.deleteLater()
+            widget = None
+        except:
+            traceback.print_exc()
+
 
 
     def fetchWeather(self, location):
@@ -42,9 +61,8 @@ class MainWindow(QMainWindow):
 
         request = requests.get(url)
         jsonContent = json.loads(request.content)
-        # return json.loads(request.content)
-        # print(url)
-        return (str(jsonContent["main"]["temp"]))
+        # return (str(jsonContent["main"]["temp"]))
+        return "testing"
 
 app = QApplication([])
 window = MainWindow()
