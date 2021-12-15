@@ -48,6 +48,8 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(self.currentWeather)
         self.layout.addWidget(self.nextWeather)
 
+        # add images for specific weather here, show next few days
+
 
     def delWidget(self, widget, layout): # technically QLineEdit inherits QFrame NOT QWidget
         try:
