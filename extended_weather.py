@@ -15,6 +15,9 @@ class MainWindow(QMainWindow):
         self.setStyleSheet("MainWindow {border-image: url(images/gradient.jpg)}")
 
 
+        self.nextDaysWeather = [[], [], [], [], []]
+
+
         self.layout = QVBoxLayout()
         self.testLabel = QLabel("testing")
         self.cityBox = QLineEdit()
@@ -37,10 +40,26 @@ class MainWindow(QMainWindow):
         self.cityBox.clear() # don't really need to clear the box if we are transitioning to a new GUI anyway
         self.delWidget(self.testLabel, self.layout)
         self.delWidget(self.cityBox, self.layout)
-        # self.cityLabel = QLabel(self.fetchWeather("Melbourne,au", 0))
-        # self.cityLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
 
         self.currWeatherLayout = QVBoxLayout()
+        self.nextWeatherLayout = QHBoxLayout()
+
+
+        for i in range(0,5):
+            self.nextDaysWeather[i].append(QVBoxLayout())
+            self.nextDaysWeather[i].append(QLabel("Next day name"))
+            self.nextDaysWeather[i].append(QLabel())
+            self.nextDaysWeather[i].append(QLabel("Next weather"))
+            self.nextDaysWeather[i][0].addWidget(self.nextDaysWeather[i][1])
+            self.nextDaysWeather[i][0].addWidget(self.nextDaysWeather[i][2])
+            self.nextDaysWeather[i][0].addWidget(self.nextDaysWeather[i][3])
+            self.nextWeatherLayout.addLayout(self.nextDaysWeather[i][0])
+
+
+        for i in range(0,5):
+            for j in range(1,4):
+                self.nextDaysWeather[i][j].setAlignment(Qt.AlignmentFlag.AlignCenter)
 
 
         self.cityNameLabel = QLabel(self.cityName)
@@ -57,13 +76,8 @@ class MainWindow(QMainWindow):
         self.currWeatherLayout.addWidget(self.currentWeather)
 
 
-        self.nextWeather = QLabel("Upcoming weather")
-        self.nextWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        # self.layout.addWidget(self.cityLabel)
-        # self.layout.addWidget(self.currentWeather)
         self.layout.addLayout(self.currWeatherLayout)
-        self.layout.addWidget(self.nextWeather)
+        self.layout.addLayout(self.nextWeatherLayout)
 
         # add images for specific weather here, show next few days
 
@@ -92,7 +106,10 @@ class MainWindow(QMainWindow):
         maxTemp = jsonContent['list'][day]['main']['temp_max']
         icon = jsonContent['list'][day]['weather'][0]['icon']
         self.weatherIcon.setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
-        return (str(curTemp) + " " + str(feelsTemp) + " " + str(minTemp) + " " + str(maxTemp))
+        for i in range(1,6):
+            self.nextIcon = jsonContent['list'][i]['weather'][0]['icon']
+            self.nextDaysWeather[i-1][2].setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
+        return ("Current tempereature: " + str(curTemp) + "\n" + "Feels like: " + str(feelsTemp) + "\n" + "Min: " + str(minTemp) + "\n" + "Max: " +  str(maxTemp))
 
 
 app = QApplication([])
