@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
 
 
         self.layout = QVBoxLayout()
-        self.testLabel = QLabel(self.fetchWeather("Melbourne,au"))
+        self.testLabel = QLabel("testing")
         self.cityBox = QLineEdit()
         self.layout.addWidget(self.testLabel)
         self.layout.addWidget(self.cityBox)
@@ -38,16 +38,16 @@ class MainWindow(QMainWindow):
         print(cityName)
         self.delWidget(self.testLabel, self.layout)
         self.delWidget(self.cityBox, self.layout)
-        self.cityLabel = QLabel("City label")
+        self.cityLabel = QLabel(self.fetchWeather("Melbourne,au", 0))
         self.cityLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.currentWeather = QLabel("City weather")
+        self.currentWeather = QLabel(self.fetchWeather("Melbourne,au", 0))
         self.currentWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.nextWeather = QLabel("Upcoming weather")
         self.nextWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
         self.layout.addWidget(self.cityLabel)
         self.layout.addWidget(self.currentWeather)
         self.layout.addWidget(self.nextWeather)
-
 
         # add images for specific weather here, show next few days
 
@@ -61,17 +61,20 @@ class MainWindow(QMainWindow):
             traceback.print_exc()
 
 
-    def fetchWeather(self, location):
-        api = "http://api.openweathermap.org/data/2.5/weather?q="
+    def fetchWeather(self, location, day): # use 0 for current day, 1, 2, etc for nexts
+        api = "http://api.openweathermap.org/data/2.5/forecast?q="
         loc = location
-        apiKey = "enter api key here" #todo change this to not be uploaded to github
+        apiKey = "enter api key here" # todo change this to not be uploaded to github
         units = "&units=metric"
         url = api + loc + "&appid=" + apiKey + units
 
         request = requests.get(url)
         jsonContent = json.loads(request.content)
-        # return (str(jsonContent["main"]["temp"]))
-        return "testing"
+        curTemp = jsonContent['list'][day]['main']['temp']
+        feelsTemp = jsonContent['list'][day]['main']['feels_like']
+        minTemp = jsonContent['list'][day]['main']['temp_min']
+        maxTemp = jsonContent['list'][day]['main']['temp_max']
+        return (str(curTemp) + " " + str(feelsTemp) + " " + str(minTemp) + " " + str(maxTemp))
 
 
 app = QApplication([])
