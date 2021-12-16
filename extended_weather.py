@@ -33,20 +33,36 @@ class MainWindow(QMainWindow):
 
 
     def cityEntered(self):
-        cityName = self.cityBox.text()
+        self.cityName = self.cityBox.text()
         self.cityBox.clear() # don't really need to clear the box if we are transitioning to a new GUI anyway
-        print(cityName)
         self.delWidget(self.testLabel, self.layout)
         self.delWidget(self.cityBox, self.layout)
-        self.cityLabel = QLabel(self.fetchWeather("Melbourne,au", 0))
-        self.cityLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # self.cityLabel = QLabel(self.fetchWeather("Melbourne,au", 0))
+        # self.cityLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.currWeatherLayout = QVBoxLayout()
+
+
+        self.cityNameLabel = QLabel(self.cityName)
+        self.cityNameLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.currWeatherLayout.addWidget(self.cityNameLabel)
+
+        self.weatherIcon = QLabel()
+        self.weatherIcon.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.currWeatherLayout.addWidget(self.weatherIcon)
+
+
         self.currentWeather = QLabel(self.fetchWeather("Melbourne,au", 0))
         self.currentWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.currWeatherLayout.addWidget(self.currentWeather)
+
+
         self.nextWeather = QLabel("Upcoming weather")
         self.nextWeather.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.layout.addWidget(self.cityLabel)
-        self.layout.addWidget(self.currentWeather)
+        # self.layout.addWidget(self.cityLabel)
+        # self.layout.addWidget(self.currentWeather)
+        self.layout.addLayout(self.currWeatherLayout)
         self.layout.addWidget(self.nextWeather)
 
         # add images for specific weather here, show next few days
@@ -74,6 +90,8 @@ class MainWindow(QMainWindow):
         feelsTemp = jsonContent['list'][day]['main']['feels_like']
         minTemp = jsonContent['list'][day]['main']['temp_min']
         maxTemp = jsonContent['list'][day]['main']['temp_max']
+        icon = jsonContent['list'][day]['weather'][0]['icon']
+        self.weatherIcon.setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
         return (str(curTemp) + " " + str(feelsTemp) + " " + str(minTemp) + " " + str(maxTemp))
 
 
