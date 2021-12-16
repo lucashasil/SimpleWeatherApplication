@@ -12,6 +12,8 @@ class MainWindow(QMainWindow):
 
         self.setFixedSize(QSize(700, 350))
         self.setWindowTitle("SimpleWeatherApplication")
+        self.setStyleSheet("MainWindow {border-image: url(images/gradient.jpg)}")
+
 
         self.layout = QVBoxLayout()
         self.testLabel = QLabel(self.fetchWeather("Melbourne,au"))
@@ -30,8 +32,6 @@ class MainWindow(QMainWindow):
         # update GUI once city entered
 
 
-
-
     def cityEntered(self):
         cityName = self.cityBox.text()
         self.cityBox.clear() # don't really need to clear the box if we are transitioning to a new GUI anyway
@@ -47,6 +47,7 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(self.cityLabel)
         self.layout.addWidget(self.currentWeather)
         self.layout.addWidget(self.nextWeather)
+
 
         # add images for specific weather here, show next few days
 
@@ -71,6 +72,7 @@ class MainWindow(QMainWindow):
         jsonContent = json.loads(request.content)
         # return (str(jsonContent["main"]["temp"]))
         return "testing"
+
 
 app = QApplication([])
 window = MainWindow()
