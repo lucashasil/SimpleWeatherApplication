@@ -79,8 +79,6 @@ class MainWindow(QMainWindow):
         self.layout.addLayout(self.currWeatherLayout)
         self.layout.addLayout(self.nextWeatherLayout)
 
-        # add images for specific weather here, show next few days
-
 
     def delWidget(self, widget, layout): # technically QLineEdit inherits QFrame NOT QWidget
         try:
@@ -94,7 +92,7 @@ class MainWindow(QMainWindow):
     def fetchWeather(self, location, day): # use 0 for current day, 1, 2, etc for nexts
         api = "http://api.openweathermap.org/data/2.5/forecast?q="
         loc = location
-        apiKey = "enter api key here" # todo change this to not be uploaded to github
+        apiKey = "6e22f5d788993623bc42245d9efbb85d" # todo change this to not be uploaded to github
         units = "&units=metric"
         url = api + loc + "&appid=" + apiKey + units
 
@@ -107,8 +105,11 @@ class MainWindow(QMainWindow):
         icon = jsonContent['list'][day]['weather'][0]['icon']
         self.weatherIcon.setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
         for i in range(1,6):
-            self.nextIcon = jsonContent['list'][i]['weather'][0]['icon']
-            self.nextDaysWeather[i-1][2].setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
+            nextMin = str(jsonContent['list'][i]['main']['temp_min'])
+            nextMax = str(jsonContent['list'][i]['main']['temp_max'])
+            nextIcon = jsonContent['list'][i]['weather'][0]['icon']
+            self.nextDaysWeather[i-1][2].setPixmap(QPixmap("images/weather_icons/" + nextIcon + ".png"))
+            self.nextDaysWeather[i-1][3].setText(nextMin + "\t\t\t\t" + nextMax)
         return ("Current tempereature: " + str(curTemp) + "\n" + "Feels like: " + str(feelsTemp) + "\n" + "Min: " + str(minTemp) + "\n" + "Max: " +  str(maxTemp))
 
 
