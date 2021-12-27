@@ -110,7 +110,7 @@ class MainWindow(QMainWindow):
             nextIcon = jsonContent['list'][i]['weather'][0]['icon']
             self.nextDaysWeather[i-1][2].setPixmap(QPixmap("images/weather_icons/" + nextIcon + ".png"))
             self.nextDaysWeather[i-1][3].setText(nextMin + "\t\t\t\t" + nextMax)
-        return ("Current tempereature: " + str(curTemp) + "\n" + "Feels like: " + str(feelsTemp) + "\n" + "Min: " + str(minTemp) + "\n" + "Max: " +  str(maxTemp))
+        return ("Current temperature: " + str(curTemp) + "\n" + "Feels like: " + str(feelsTemp) + "\n" + "Min: " + str(minTemp) + "\n" + "Max: " +  str(maxTemp))
 
 
 app = QApplication([])
