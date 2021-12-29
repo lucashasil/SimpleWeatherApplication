@@ -98,19 +98,35 @@ class MainWindow(QMainWindow):
 
         request = requests.get(url)
         jsonContent = json.loads(request.content)
-        curTemp = jsonContent['list'][day]['main']['temp']
-        feelsTemp = jsonContent['list'][day]['main']['feels_like']
-        minTemp = jsonContent['list'][day]['main']['temp_min']
-        maxTemp = jsonContent['list'][day]['main']['temp_max']
-        icon = jsonContent['list'][day]['weather'][0]['icon']
-        self.weatherIcon.setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
-        for i in range(1,6):
-            nextMin = str(jsonContent['list'][i]['main']['temp_min'])
-            nextMax = str(jsonContent['list'][i]['main']['temp_max'])
-            nextIcon = jsonContent['list'][i]['weather'][0]['icon']
-            self.nextDaysWeather[i-1][2].setPixmap(QPixmap("images/weather_icons/" + nextIcon + ".png"))
-            self.nextDaysWeather[i-1][3].setText(nextMin + "\t\t\t\t" + nextMax)
-        return ("Current temperature: " + str(curTemp) + "\n" + "Feels like: " + str(feelsTemp) + "\n" + "Min: " + str(minTemp) + "\n" + "Max: " +  str(maxTemp))
+        # curTemp = jsonContent['list'][day]['main']['temp']
+        # feelsTemp = jsonContent['list'][day]['main']['feels_like']
+        # minTemp = jsonContent['list'][day]['main']['temp_min']
+        # maxTemp = jsonContent['list'][day]['main']['temp_max']
+        # icon = jsonContent['list'][day]['weather'][0]['icon']
+        # self.weatherIcon.setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
+        # for i in range(1,6):
+        #     nextMin = str(jsonContent['list'][i]['main']['temp_min'])
+        #     nextMax = str(jsonContent['list'][i]['main']['temp_max'])
+        #     nextIcon = jsonContent['list'][i]['weather'][0]['icon']
+        #     self.nextDaysWeather[i-1][2].setPixmap(QPixmap("images/weather_icons/" + nextIcon + ".png"))
+        #     self.nextDaysWeather[i-1][3].setText(nextMin + "\t\t\t\t" + nextMax)
+        # return ("Current temperature: " + str(curTemp) + "\n" + "Feels like: " + str(feelsTemp) + "\n" + "Min: " + str(minTemp) + "\n" + "Max: " +  str(maxTemp))
+        weatherData = [[], [], [], [], [], []]
+        for i in range(6):
+            curTemp = jsonContent['list'][i]['main']['temp'] # only need this for cur day, OWM records for all days (def val)
+            feelsTemp = jsonContent['list'][i]['main']['feels_like'] # only need this for cur day, OWM records for all days (def val)
+            minTemp = jsonContent['list'][day]['main']['temp_min']
+            maxTemp = jsonContent['list'][i]['main']['temp_max']
+            icon = jsonContent['list'][i]['weather'][0]['icon']
+
+            if (i != 0):
+                self.nextDaysWeather[i-1][2].setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
+                self.nextDaysWeather[i-1][3].setText(str(minTemp) + "\t\t\t\t" + str(maxTemp))
+
+            # weatherData[i].append(curTemp)
+            # weatherData[i].append(feelsTemp)
+
+        return ("MIN_TEMP" + "\t\t\t\t" +  "MAX_TEMP" + "\n\n" + "Currently: " + "CUR_TEMP" + "\n" + "Feels like: " + "FEELS_LIKE")
 
 
 app = QApplication([])
