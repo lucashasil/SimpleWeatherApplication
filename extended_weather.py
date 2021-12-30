@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
 
 
         self.layout = QVBoxLayout()
-        self.testLabel = QLabel("testing")
+        self.testLabel = QLabel("What city would you like a forecast for? (Enter as: City,CountryInitials)")
         self.cityBox = QLineEdit()
         self.layout.addWidget(self.testLabel)
         self.layout.addWidget(self.cityBox)
@@ -87,7 +87,7 @@ class MainWindow(QMainWindow):
         self.layout.addLayout(self.nextWeatherLayout)
         
         # update weather once initially
-        self.updateWeather("Melbourne,AU")
+        self.updateWeather(self.cityName)
 
 
     def delWidget(self, widget, layout): # technically QLineEdit inherits QFrame NOT QWidget
@@ -106,7 +106,6 @@ class MainWindow(QMainWindow):
         apiKey = "enter api key here" # todo change this to not be uploaded to github
         units = "&units=metric"
         url = api + loc + "&appid=" + apiKey + units
-
         request = requests.get(url)
         jsonContent = json.loads(request.content)
         for i in range(6):
