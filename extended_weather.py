@@ -54,9 +54,11 @@ class MainWindow(QMainWindow):
         self.currWeatherLayout = QVBoxLayout()
         self.nextWeatherLayout = QHBoxLayout()
 
-        self.cityNameLabel = QLabel(self.cityName)
+
+        self.cityNameLabel = QLabel()
         self.cityNameLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.currWeatherLayout.addWidget(self.cityNameLabel)
+
 
         self.weatherIcon = QLabel()
         self.weatherIcon.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -103,11 +105,12 @@ class MainWindow(QMainWindow):
         curDayNum = datetime.datetime.today().weekday()
         api = "http://api.openweathermap.org/data/2.5/forecast?q="
         loc = location
-        apiKey = "enter api key here" # todo change this to not be uploaded to github
+        apiKey = "6e22f5d788993623bc42245d9efbb85d" # todo change this to not be uploaded to github
         units = "&units=metric"
         url = api + loc + "&appid=" + apiKey + units
         request = requests.get(url)
         jsonContent = json.loads(request.content)
+        self.cityNameLabel.setText(jsonContent['city']['name'] + ", " + jsonContent['city']['country'])
         for i in range(6):
             nextDayNum = curDayNum + i
             curTemp = jsonContent['list'][i]['main']['temp'] # only need this for cur day, OWM records for all days (def val)
