@@ -2,6 +2,7 @@ from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 
+import datetime
 import json
 import requests
 import traceback
@@ -13,6 +14,14 @@ class MainWindow(QMainWindow):
         self.setFixedSize(QSize(700, 350))
         self.setWindowTitle("SimpleWeatherApplication")
         self.setStyleSheet("MainWindow {border-image: url(images/gradient.jpg)}")
+
+        self.days = ['Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday',
+                    'Sunday']
 
         # index order: layout, title, icon, weather
         self.nextDaysWeather = [[], [], [], [], []]
@@ -91,6 +100,7 @@ class MainWindow(QMainWindow):
 
 
     def updateWeather(self, location): # use 0 for current day, 1, 2, etc for nexts
+        curDayNum = datetime.datetime.today().weekday()
         api = "http://api.openweathermap.org/data/2.5/forecast?q="
         loc = location
         apiKey = "enter api key here" # todo change this to not be uploaded to github
@@ -100,6 +110,7 @@ class MainWindow(QMainWindow):
         request = requests.get(url)
         jsonContent = json.loads(request.content)
         for i in range(6):
+            nextDayNum = curDayNum + i
             curTemp = jsonContent['list'][i]['main']['temp'] # only need this for cur day, OWM records for all days (def val)
             feelsTemp = jsonContent['list'][i]['main']['feels_like'] # only need this for cur day, OWM records for all days (def val)
             minTemp = jsonContent['list'][i]['main']['temp_min']
@@ -109,7 +120,10 @@ class MainWindow(QMainWindow):
                 self.weatherIcon.setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
                 self.currentWeather.setText(str(minTemp) + "\t\t\t\t" +  str(maxTemp) + "\n\n" + "Currently: " + str(curTemp) + "\n" + "Feels like: " + str(feelsTemp))
             else:
-                self.nextDaysWeather[i-1][1].setText()
+                if (nextDayNum > 6):
+                    self.nextDaysWeather[i-1][1].setText(self.days[nextDayNum - 7])
+                else:
+                    self.nextDaysWeather[i-1][1].setText(self.days[nextDayNum])
                 self.nextDaysWeather[i-1][2].setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
                 self.nextDaysWeather[i-1][3].setText(str(minTemp) + "\t\t\t\t" + str(maxTemp))
 
