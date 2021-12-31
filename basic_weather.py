@@ -117,13 +117,3 @@ class MainWindow(QMainWindow):
         t = time.localtime()
         curTime = time.strftime("%I:%M%p", t).lower()
         return ("Last Update: " + curTime)
-
-
-def run():
-    app = QApplication([])
-    window = MainWindow()
-    window.show()
-    app.exec()
-
-# if __name__ == "__main__":
-#     main()

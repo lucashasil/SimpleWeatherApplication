@@ -2,8 +2,9 @@ from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 
-import basic_weather
-import extended_weather
+import basic_weather as bw
+import extended_weather as ew
+import sys
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -31,12 +32,26 @@ class MainWindow(QMainWindow):
         self.widget.setLayout(self.mainLayout)
         self.setCentralWidget(self.widget)
 
+        # connect buttons to appropriate methods
+        self.basicMode.clicked.connect(self.basicWindow)
+        self.extendedMode.clicked.connect(self.extendWindow)
+
+    def basicWindow(self):
+        self.bW = bw.MainWindow()
+        self.bW.show()
+        self.hide()
+
+    def extendWindow(self):
+        self.eW = ew.MainWindow()
+        self.eW.show()
+        self.hide()
+
         
 def main():
     app = QApplication([])
     window = MainWindow()
     window.show()
-    app.exec()
+    sys.exit(app.exec())
 
 
 

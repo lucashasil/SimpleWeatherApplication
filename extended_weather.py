@@ -128,14 +128,3 @@ class MainWindow(QMainWindow):
                     self.nextDaysWeather[i-1][1].setText(self.days[nextDayNum])
                 self.nextDaysWeather[i-1][2].setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
                 self.nextDaysWeather[i-1][3].setText(str(minTemp) + "\t\t\t\t" + str(maxTemp))
-
-def run():
-    app = QApplication([])
-    window = MainWindow()
-    window.show()
-    app.exec()
-
-# if __name__ == "__main__":
-#     main()
-
-
