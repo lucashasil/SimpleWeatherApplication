@@ -12,6 +12,8 @@ class MainWindow(QMainWindow):
         
         self.setFixedSize(QSize(800, 500))
         self.setWindowTitle("SimpleWeatherApplication")
+        self.setStyleSheet("MainWindow {border-image: url(images/gradient.jpg)}")
+
 
         self.mainLayout = QVBoxLayout()
         self.subLayout = QHBoxLayout()

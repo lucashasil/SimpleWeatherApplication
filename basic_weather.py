@@ -17,6 +17,7 @@ class MainWindow(QMainWindow):
         self.setFixedSize(QSize(1000, 700))
         self.setWindowTitle("SimpleWeatherApplication")
 
+
         self.baseLayout = QGridLayout() # base grid of all locations
 
         self.citiesList = []
@@ -72,25 +73,24 @@ class MainWindow(QMainWindow):
 
 
     def fetchWeather(self, location):
-        # match location:
-        #     case "Canberra":
-        #         url = "http://www.bom.gov.au/fwo/IDN60903/IDN60903.94926.json"
-        #     case "Sydney":
-        #         url = "http://www.bom.gov.au/fwo/IDN60901/IDN60901.95765.json"
-        #     case "Darwin":
-        #         url = "http://www.bom.gov.au/fwo/IDD60901/IDD60901.95122.json"
-        #     case "Brisbane":
-        #         url = "http://www.bom.gov.au/fwo/IDQ60901/IDQ60901.94576.json"
-        #     case "Adelaide":
-        #         url = "http://www.bom.gov.au/fwo/IDS60901/IDS60901.94672.json"
-        #     case "Hobart":
-        #         url = "http://www.bom.gov.au/fwo/IDT60901/IDT60901.94970.json"
-        #     case "Melbourne":
-        #         url = "http://www.bom.gov.au/fwo/IDV60901/IDV60901.95936.json"
-        #     case "Perth":
-        #         url = "http://www.bom.gov.au/fwo/IDW60901/IDW60901.94608.json"
+        match location:
+            case "Canberra":
+                url = "http://www.bom.gov.au/fwo/IDN60903/IDN60903.94926.json"
+            case "Sydney":
+                url = "http://www.bom.gov.au/fwo/IDN60901/IDN60901.95765.json"
+            case "Darwin":
+                url = "http://www.bom.gov.au/fwo/IDD60901/IDD60901.95122.json"
+            case "Brisbane":
+                url = "http://www.bom.gov.au/fwo/IDQ60901/IDQ60901.94576.json"
+            case "Adelaide":
+                url = "http://www.bom.gov.au/fwo/IDS60901/IDS60901.94672.json"
+            case "Hobart":
+                url = "http://www.bom.gov.au/fwo/IDT60901/IDT60901.94970.json"
+            case "Melbourne":
+                url = "http://www.bom.gov.au/fwo/IDV60901/IDV60901.95936.json"
+            case "Perth":
+                url = "http://www.bom.gov.au/fwo/IDW60901/IDW60901.94608.json"
 
-        url = "http://www.bom.gov.au/fwo/IDV60901/IDV60901.95936.json"
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0'} # needed to authenticate, need user-agnt
         request = requests.get(url, headers=headers)
         jsonContent = json.loads(request.content)
