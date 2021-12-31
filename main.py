@@ -21,12 +21,20 @@ class MainWindow(QMainWindow):
         self.mainLayout.addWidget(self.choiceLabel)
 
         self.basicMode = QPushButton("Basic Mode")
+        self.basicMode.setFixedHeight(125)
         self.subLayout.addWidget(self.basicMode)
 
         self.extendedMode = QPushButton("Extended Mode")
+        self.extendedMode.setFixedHeight(125)
         self.subLayout.addWidget(self.extendedMode)
 
+
         self.mainLayout.addLayout(self.subLayout)
+
+        self.emptyLabel = QLabel()
+        self.emptyLabel.setFixedHeight(80)
+        self.mainLayout.addWidget(self.emptyLabel)
+
 
         self.widget = QWidget()
         self.widget.setLayout(self.mainLayout)
