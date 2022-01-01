@@ -28,12 +28,17 @@ class MainWindow(QMainWindow):
 
 
         self.layout = QVBoxLayout()
-        self.testLabel = QLabel("What city would you like a forecast for? (Enter as: City,CountryInitials)")
+        self.testLabel = QLabel("Please enter a city and country in the form {City,CountryInitials}")
         self.cityBox = QLineEdit()
         self.layout.addWidget(self.testLabel)
         self.layout.addWidget(self.cityBox)
         self.testLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.cityBox.setFixedHeight(40)
         self.cityBox.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.spacer = QLabel()
+        self.layout.addWidget(self.spacer)
 
         self.widget = QWidget()
         self.widget.setLayout(self.layout)
