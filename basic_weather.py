@@ -79,7 +79,7 @@ class MainWindow(QMainWindow):
             case "Sydney":
                 url = "http://www.bom.gov.au/fwo/IDN60901/IDN60901.95765.json"
             case "Darwin":
-                url = "http://www.bom.gov.au/fwo/IDD60901/IDD60901.95122.json"
+                url = "http://www.bom.gov.au/fwo/IDD60901/IDD60901.94120.json"
             case "Brisbane":
                 url = "http://www.bom.gov.au/fwo/IDQ60901/IDQ60901.94576.json"
             case "Adelaide":
