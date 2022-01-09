@@ -11,7 +11,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setFixedSize(QSize(700, 350))
+        self.setFixedSize(QSize(700, 380))
         self.setWindowTitle("SimpleWeatherApplication")
         self.setStyleSheet("MainWindow {border-image: url(images/gradient.jpg)}")
 
@@ -94,6 +94,8 @@ class MainWindow(QMainWindow):
         self.layout.addLayout(self.nextWeatherLayout)
         
         # update weather once initially
+        self.cityName.replace(" ", "") # remove whitespaces
+        self.cityName.lower()
         self.updateWeather(self.cityName)
 
 
@@ -125,7 +127,7 @@ class MainWindow(QMainWindow):
             icon = jsonContent['list'][i]['weather'][0]['icon']
             if (i == 0):
                 self.weatherIcon.setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
-                self.currentWeather.setText(str(minTemp) + "\t\t\t\t" +  str(maxTemp) + "\n\n" + "Currently: " + str(curTemp) + "\n" + "Feels like: " + str(feelsTemp))
+                self.currentWeather.setText(str(minTemp) + "\t\t\t\t" +  str(maxTemp) + "\n\n" + "Currently: " + str(curTemp) + "\n" + "Feels like: " + str(feelsTemp) + "\n")
             else:
                 if (nextDayNum > 6):
                     self.nextDaysWeather[i-1][1].setText(self.days[nextDayNum - 7])

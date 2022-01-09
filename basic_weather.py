@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setFixedSize(QSize(1000, 700))
-        self.setWindowTitle("SimpleWeatherApplication")
+        self.setWindowTitle("SimpleWeatherApplication - Basic")
 
 
         self.baseLayout = QGridLayout() # base grid of all locations

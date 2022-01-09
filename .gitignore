@@ -2,3 +2,5 @@
 .venv/
 __pycache__/basic_weather.cpython-38.pyc
 __pycache__/extended_weather.cpython-38.pyc
+__pycache__/basic_weather.cpython-310.pyc
+__pycache__/extended_weather.cpython-310.pyc

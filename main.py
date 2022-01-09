@@ -11,7 +11,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         
         self.setFixedSize(QSize(800, 500))
-        self.setWindowTitle("SimpleWeatherApplication")
+        self.setWindowTitle("SimpleWeatherApplication - Extended")
         self.setStyleSheet("MainWindow {border-image: url(images/gradient.jpg)}")
 
 
