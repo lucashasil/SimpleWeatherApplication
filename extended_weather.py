@@ -60,7 +60,7 @@ class MainWindow(QMainWindow):
         self.nextWeatherLayout = QHBoxLayout()
 
 
-        self.cityNameLabel = QLabel()
+        self.cityNameLabel = QLabel("The given location was not found, please try again!")
         self.cityNameLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.currWeatherLayout.addWidget(self.cityNameLabel)
 
@@ -77,9 +77,9 @@ class MainWindow(QMainWindow):
 
         for i in range(0,5):
             self.nextDaysWeather[i].append(QVBoxLayout())
-            self.nextDaysWeather[i].append(QLabel("DEF_NAME")) 
+            self.nextDaysWeather[i].append(QLabel()) 
             self.nextDaysWeather[i].append(QLabel()) # icon
-            self.nextDaysWeather[i].append(QLabel("DEF_WEATHER")) 
+            self.nextDaysWeather[i].append(QLabel()) 
             self.nextDaysWeather[i][0].addWidget(self.nextDaysWeather[i][1])
             self.nextDaysWeather[i][0].addWidget(self.nextDaysWeather[i][2])
             self.nextDaysWeather[i][0].addWidget(self.nextDaysWeather[i][3])
@@ -96,7 +96,11 @@ class MainWindow(QMainWindow):
         # update weather once initially
         self.cityName.replace(" ", "") # remove whitespaces
         self.cityName.lower()
-        self.updateWeather(self.cityName)
+        try:
+            self.updateWeather(self.cityName)
+        # if entered name was not found
+        except:
+            pass
 
 
     def delWidget(self, widget, layout): # technically QLineEdit inherits QFrame NOT QWidget
@@ -116,7 +120,7 @@ class MainWindow(QMainWindow):
         units = "&units=metric"
         url = api + loc + "&appid=" + apiKey + units
         request = requests.get(url)
-        jsonContent = json.loads(request.content)
+        jsonContent = json.loads(request.content)        
         self.cityNameLabel.setText(jsonContent['city']['name'] + ", " + jsonContent['city']['country'])
         for i in range(6):
             nextDayNum = curDayNum + i
@@ -135,3 +139,4 @@ class MainWindow(QMainWindow):
                     self.nextDaysWeather[i-1][1].setText(self.days[nextDayNum])
                 self.nextDaysWeather[i-1][2].setPixmap(QPixmap("images/weather_icons/" + icon + ".png"))
                 self.nextDaysWeather[i-1][3].setText(str(minTemp) + "\t\t\t\t" + str(maxTemp))
+
